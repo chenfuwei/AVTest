@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  AVTest
+
+  Created by net263 on 2019/7/26.
+  Copyright © 2019 net263. All rights reserved.
+*/
+NSCameraUsageDescription = "获取摄像机权限";
+NSMicrophoneUsageDescription = "获取MIC权限";

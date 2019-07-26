@@ -1,0 +1,22 @@
+//
+//  PrefixHeader.pch
+//  MultiLanguage
+//
+//  Created by net263 on 2019/7/24.
+//  Copyright © 2019 net263. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#define SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.width
+#define SCREEN_HEIGHT [[UIScreen mainScreen] bounds].size.height
+#define LocalizedString(key) [[NSBundle mainBundle] localizedStringForKey:key value:@"" table:nil]
+#define LocalizedTableString(key, tableName) [[NSBundle mainBundle] localizedStringForKey:key value:@"" table:tableName]
+#define LocalizedTableInBundleString(key, tableName, bundle) NSLocalizedStringFromTableInBundle(key, tableName, bundle, @"")
+
+#define MARGIN_TOP 64
+
+#define ReLog(fmt, ...) NSLog((@"G-cast: %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+
+#endif /* PrefixHeader_pch */
