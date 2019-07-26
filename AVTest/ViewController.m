@@ -15,6 +15,7 @@
 @implementation ViewController
 {
     UIImageView* imageView;
+    UIImageView* imageView1;
 }
 
 - (void)viewDidLoad {
@@ -55,8 +56,11 @@
     [self.view addSubview:takeVideo];
     
     
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT - 200, 200, 200)];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 150, 150, 150)];
     [self.view addSubview:imageView];
+    
+    imageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(150 + 50, SCREEN_HEIGHT - 150, 150, 150)];
+    [self.view addSubview:imageView1];
 }
 
 -(void)videoTest:(UIButton*)sender
@@ -127,6 +131,9 @@
     {
         UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
         imageView.image = image;
+        
+        UIImage* editImage = [info objectForKey:UIImagePickerControllerEditedImage];
+        imageView1.image = editImage;
     }
 }
 
