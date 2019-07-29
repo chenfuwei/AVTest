@@ -76,6 +76,7 @@
     _devicePosition = AVCaptureDevicePositionBack;
     _outPutFormateType = kCVPixelFormatType_420YpCbCr8BiPlanarFullRange;
     //kCVPixelFormatType_32BGRA;;//kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange;//kCVPixelFormatType_32BGRA;
+    //kCVPixelFormatType_420YpCbCr8BiPlanarFullRange与kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange，只是颜色精度不一样s
 }
 
 -(void)stopCapture:(UIButton*)sender
