@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "AVFoundationViewController.h"
 
 @interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -20,7 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.view.backgroundColor = [UIColor whiteColor];
     
     UIButton* video = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH / 2.0 - 50, MARGIN_TOP, 100, 30)];
     video.backgroundColor = [UIColor blueColor];
@@ -65,7 +66,8 @@
 
 -(void)videoTest:(UIButton*)sender
 {
-
+    AVFoundationViewController* avController = [[AVFoundationViewController alloc] init];
+    [self.navigationController pushViewController:avController animated:YES];
 }
 
 -(void)audioTest:(UIButton*)sender

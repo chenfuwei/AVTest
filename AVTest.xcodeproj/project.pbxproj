@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		442B16A622EEF44D0087DF3D /* GSSDLGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B169522EEF44D0087DF3D /* GSSDLGLView.m */; };
+		442B16A722EEF44D0087DF3D /* GSRGBRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B169922EEF44D0087DF3D /* GSRGBRender.m */; };
+		442B16A822EEF44D0087DF3D /* GSYUVRenderNV12.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B169A22EEF44D0087DF3D /* GSYUVRenderNV12.m */; };
+		442B16A922EEF44D0087DF3D /* GSYUVRenderI420.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B169B22EEF44D0087DF3D /* GSYUVRenderI420.m */; };
+		442B16AA22EEF44D0087DF3D /* GSGLRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A022EEF44D0087DF3D /* GSGLRender.m */; };
+		442B16AB22EEF44D0087DF3D /* GSVTBRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A222EEF44D0087DF3D /* GSVTBRender.m */; };
+		442B16AC22EEF44D0087DF3D /* glcommon.c in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A322EEF44D0087DF3D /* glcommon.c */; };
+		442B16AD22EEF44D0087DF3D /* GSGLRenderColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A422EEF44D0087DF3D /* GSGLRenderColors.m */; };
+		442B16AE22EEF44D0087DF3D /* GSGLBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A522EEF44D0087DF3D /* GSGLBuffer.m */; };
 		44E2333622EA981E007E03F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2333522EA981E007E03F8 /* AppDelegate.m */; };
 		44E2333922EA981E007E03F8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2333822EA981E007E03F8 /* ViewController.m */; };
 		44E2333C22EA981E007E03F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44E2333A22EA981E007E03F8 /* Main.storyboard */; };
@@ -16,6 +25,7 @@
 		44E2334E22EA9820007E03F8 /* AVTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2334D22EA9820007E03F8 /* AVTestTests.m */; };
 		44E2335922EA9820007E03F8 /* AVTestUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2335822EA9820007E03F8 /* AVTestUITests.m */; };
 		44E2337622EAA586007E03F8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44E2337822EAA586007E03F8 /* InfoPlist.strings */; };
+		44E233C322EADCFF007E03F8 /* AVFoundationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E233C222EADCFF007E03F8 /* AVFoundationViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +46,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		442B169122EEF44D0087DF3D /* GSGLRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSGLRender.h; sourceTree = "<group>"; };
+		442B169222EEF44D0087DF3D /* GSGLRenderProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSGLRenderProtocol.h; sourceTree = "<group>"; };
+		442B169322EEF44D0087DF3D /* GSVTBRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSVTBRender.h; sourceTree = "<group>"; };
+		442B169422EEF44D0087DF3D /* glcommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glcommon.h; sourceTree = "<group>"; };
+		442B169522EEF44D0087DF3D /* GSSDLGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSDLGLView.m; sourceTree = "<group>"; };
+		442B169722EEF44D0087DF3D /* GSYUVRenderI420.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSYUVRenderI420.h; sourceTree = "<group>"; };
+		442B169822EEF44D0087DF3D /* GSYUVRenderNV12.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSYUVRenderNV12.h; sourceTree = "<group>"; };
+		442B169922EEF44D0087DF3D /* GSRGBRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSRGBRender.m; sourceTree = "<group>"; };
+		442B169A22EEF44D0087DF3D /* GSYUVRenderNV12.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSYUVRenderNV12.m; sourceTree = "<group>"; };
+		442B169B22EEF44D0087DF3D /* GSYUVRenderI420.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSYUVRenderI420.m; sourceTree = "<group>"; };
+		442B169C22EEF44D0087DF3D /* GSRGBRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSRGBRender.h; sourceTree = "<group>"; };
+		442B169D22EEF44D0087DF3D /* GSGLBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSGLBuffer.h; sourceTree = "<group>"; };
+		442B169E22EEF44D0087DF3D /* GSGLRenderColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSGLRenderColors.h; sourceTree = "<group>"; };
+		442B169F22EEF44D0087DF3D /* GSVideoConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSVideoConst.h; sourceTree = "<group>"; };
+		442B16A022EEF44D0087DF3D /* GSGLRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSGLRender.m; sourceTree = "<group>"; };
+		442B16A122EEF44D0087DF3D /* GSSDLGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSDLGLView.h; sourceTree = "<group>"; };
+		442B16A222EEF44D0087DF3D /* GSVTBRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSVTBRender.m; sourceTree = "<group>"; };
+		442B16A322EEF44D0087DF3D /* glcommon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glcommon.c; sourceTree = "<group>"; };
+		442B16A422EEF44D0087DF3D /* GSGLRenderColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSGLRenderColors.m; sourceTree = "<group>"; };
+		442B16A522EEF44D0087DF3D /* GSGLBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSGLBuffer.m; sourceTree = "<group>"; };
 		44E2333122EA981E007E03F8 /* AVTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44E2333422EA981E007E03F8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		44E2333522EA981E007E03F8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -55,6 +85,8 @@
 		44E2337722EAA586007E03F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44E2337922EAA590007E03F8 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		44E2337D22EAA6BB007E03F8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		44E233C122EADCFF007E03F8 /* AVFoundationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVFoundationViewController.h; sourceTree = "<group>"; };
+		44E233C222EADCFF007E03F8 /* AVFoundationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AVFoundationViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +114,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		442B169022EEF44D0087DF3D /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				442B169122EEF44D0087DF3D /* GSGLRender.h */,
+				442B169222EEF44D0087DF3D /* GSGLRenderProtocol.h */,
+				442B169322EEF44D0087DF3D /* GSVTBRender.h */,
+				442B169422EEF44D0087DF3D /* glcommon.h */,
+				442B169522EEF44D0087DF3D /* GSSDLGLView.m */,
+				442B169622EEF44D0087DF3D /* Render */,
+				442B169D22EEF44D0087DF3D /* GSGLBuffer.h */,
+				442B169E22EEF44D0087DF3D /* GSGLRenderColors.h */,
+				442B169F22EEF44D0087DF3D /* GSVideoConst.h */,
+				442B16A022EEF44D0087DF3D /* GSGLRender.m */,
+				442B16A122EEF44D0087DF3D /* GSSDLGLView.h */,
+				442B16A222EEF44D0087DF3D /* GSVTBRender.m */,
+				442B16A322EEF44D0087DF3D /* glcommon.c */,
+				442B16A422EEF44D0087DF3D /* GSGLRenderColors.m */,
+				442B16A522EEF44D0087DF3D /* GSGLBuffer.m */,
+			);
+			path = OpenGL;
+			sourceTree = "<group>";
+		};
+		442B169622EEF44D0087DF3D /* Render */ = {
+			isa = PBXGroup;
+			children = (
+				442B169722EEF44D0087DF3D /* GSYUVRenderI420.h */,
+				442B169822EEF44D0087DF3D /* GSYUVRenderNV12.h */,
+				442B169922EEF44D0087DF3D /* GSRGBRender.m */,
+				442B169A22EEF44D0087DF3D /* GSYUVRenderNV12.m */,
+				442B169B22EEF44D0087DF3D /* GSYUVRenderI420.m */,
+				442B169C22EEF44D0087DF3D /* GSRGBRender.h */,
+			);
+			path = Render;
+			sourceTree = "<group>";
+		};
 		44E2332822EA981E007E03F8 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +173,7 @@
 		44E2333322EA981E007E03F8 /* AVTest */ = {
 			isa = PBXGroup;
 			children = (
+				442B169022EEF44D0087DF3D /* OpenGL */,
 				44E2337D22EAA6BB007E03F8 /* Info.plist */,
 				44E2333422EA981E007E03F8 /* AppDelegate.h */,
 				44E2333522EA981E007E03F8 /* AppDelegate.m */,
@@ -116,6 +184,8 @@
 				44E2333F22EA9820007E03F8 /* LaunchScreen.storyboard */,
 				44E2334322EA9820007E03F8 /* main.m */,
 				44E2337822EAA586007E03F8 /* InfoPlist.strings */,
+				44E233C122EADCFF007E03F8 /* AVFoundationViewController.h */,
+				44E233C222EADCFF007E03F8 /* AVFoundationViewController.m */,
 			);
 			path = AVTest;
 			sourceTree = "<group>";
@@ -270,9 +340,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44E233C322EADCFF007E03F8 /* AVFoundationViewController.m in Sources */,
+				442B16A922EEF44D0087DF3D /* GSYUVRenderI420.m in Sources */,
+				442B16A722EEF44D0087DF3D /* GSRGBRender.m in Sources */,
+				442B16A822EEF44D0087DF3D /* GSYUVRenderNV12.m in Sources */,
+				442B16AD22EEF44D0087DF3D /* GSGLRenderColors.m in Sources */,
+				442B16AB22EEF44D0087DF3D /* GSVTBRender.m in Sources */,
+				442B16A622EEF44D0087DF3D /* GSSDLGLView.m in Sources */,
 				44E2333922EA981E007E03F8 /* ViewController.m in Sources */,
 				44E2334422EA9820007E03F8 /* main.m in Sources */,
+				442B16AC22EEF44D0087DF3D /* glcommon.c in Sources */,
+				442B16AA22EEF44D0087DF3D /* GSGLRender.m in Sources */,
 				44E2333622EA981E007E03F8 /* AppDelegate.m in Sources */,
+				442B16AE22EEF44D0087DF3D /* GSGLBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
