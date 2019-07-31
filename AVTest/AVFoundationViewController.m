@@ -10,8 +10,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import "GSSDLGLView.h"
 #import "GSGLBuffer.h"
+#import "H264HardEncoderImpl.h"
 
-@interface AVFoundationViewController ()<AVCaptureVideoDataOutputSampleBufferDelegate>
+@interface AVFoundationViewController ()<AVCaptureVideoDataOutputSampleBufferDelegate, H264HardEncoderImplDelegate>
 
 @end
 
@@ -28,6 +29,13 @@
     BOOL _enableTorch;
     int _outPutFormateType;
     GSSDLGLView* _sdlGlView;
+    
+    
+    H264HardEncoderImpl* h264Encoder;
+    NSString* h264File;
+    int fd;
+    NSFileHandle* fileHandle;
+    BOOL startCalled;
 }
 
 - (void)viewDidLoad {
@@ -62,6 +70,12 @@
     [video4 addTarget:self action:@selector(switchFocus:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:video4];
     
+    UIButton* encodeVideo = [[UIButton alloc] initWithFrame:CGRectMake( 50 + 100 + 10 + 100 + 10, MARGIN_TOP + 10 + 30, 100, 30)];
+    encodeVideo.backgroundColor = [UIColor blueColor];
+    [encodeVideo setTitle:@"编码" forState:UIControlStateNormal];
+    [encodeVideo addTarget:self action:@selector(encodeVideo:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:encodeVideo];
+    
     _previewView = [[UIView alloc] initWithFrame:CGRectMake(0, MARGIN_TOP+100, SCREEN_WIDTH, SCREEN_WIDTH)];
     [self.view addSubview:_previewView];
     UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFocus:)];
@@ -77,6 +91,33 @@
     _outPutFormateType = kCVPixelFormatType_420YpCbCr8BiPlanarFullRange;
     //kCVPixelFormatType_32BGRA;;//kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange;//kCVPixelFormatType_32BGRA;
     //kCVPixelFormatType_420YpCbCr8BiPlanarFullRange与kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange，只是颜色精度不一样s
+    
+    h264Encoder = [[H264HardEncoderImpl alloc] init];
+    startCalled = true;
+}
+
+-(void)encodeVideo:(UIButton*)sender
+{
+    if(startCalled)
+    {
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString* documentDirectory = [paths objectAtIndex:0];
+        
+        h264File = [documentDirectory stringByAppendingPathComponent:@"test.h264"];
+        [fileManager removeItemAtPath:h264File error:nil];
+        [fileManager createFileAtPath:h264File contents:nil attributes:nil];
+        
+        fileHandle = [NSFileHandle fileHandleForWritingAtPath:h264File];
+        [h264Encoder initEncode:640 height:480];
+        h264Encoder.delegate = self;
+        startCalled = false;
+    }else{
+        startCalled = true;
+        [fileHandle closeFile];
+        fileHandle = NULL;
+        [h264Encoder end];
+    }
 }
 
 -(void)stopCapture:(UIButton*)sender
@@ -292,6 +333,11 @@
     {
         [self imageFromYUV420VideoRange:sampleBuffer];
     }
+    
+    if(!startCalled && h264Encoder)
+    {
+        [h264Encoder encode:sampleBuffer];
+    }
 }
 
 -(void)imageFromYUV420VideoRange:(CMSampleBufferRef)sampleBuffer
@@ -388,5 +434,29 @@
     CGImageRelease(quartzImage);
     return image;
     
+}
+
+- (void)gotSpsPps:(NSData *)sps pps:(NSData *)pps
+{
+    const char bytes[] = "\x00\x00\x00\x01";
+    size_t length = (sizeof(bytes) -1);
+    NSData* byteHeader = [NSData dataWithBytes:bytes length:length];
+    [fileHandle writeData:byteHeader];
+    [fileHandle writeData:sps];
+    [fileHandle writeData:byteHeader];
+    [fileHandle writeData:pps];
+}
+
+- (void)gotEncodedData:(NSData *)data isKeyFrame:(BOOL)isKeyFrame
+{
+    static int frameCount = 1;
+    if(fileHandle != NULL)
+    {
+        const char bytes[] = "\x00\x00\x00\x01";
+        size_t length = sizeof(bytes) - 1;
+        NSData* byteHeader = [NSData dataWithBytes:bytes length:length];
+        [fileHandle writeData:byteHeader];
+        [fileHandle writeData:data];
+    }
 }
 @end

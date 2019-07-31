@@ -16,6 +16,7 @@
 		442B16AC22EEF44D0087DF3D /* glcommon.c in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A322EEF44D0087DF3D /* glcommon.c */; };
 		442B16AD22EEF44D0087DF3D /* GSGLRenderColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A422EEF44D0087DF3D /* GSGLRenderColors.m */; };
 		442B16AE22EEF44D0087DF3D /* GSGLBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A522EEF44D0087DF3D /* GSGLBuffer.m */; };
+		442B170322F12D650087DF3D /* H264HardEncoderImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B170222F12D650087DF3D /* H264HardEncoderImpl.m */; };
 		44E2333622EA981E007E03F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2333522EA981E007E03F8 /* AppDelegate.m */; };
 		44E2333922EA981E007E03F8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2333822EA981E007E03F8 /* ViewController.m */; };
 		44E2333C22EA981E007E03F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44E2333A22EA981E007E03F8 /* Main.storyboard */; };
@@ -66,6 +67,8 @@
 		442B16A322EEF44D0087DF3D /* glcommon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glcommon.c; sourceTree = "<group>"; };
 		442B16A422EEF44D0087DF3D /* GSGLRenderColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSGLRenderColors.m; sourceTree = "<group>"; };
 		442B16A522EEF44D0087DF3D /* GSGLBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSGLBuffer.m; sourceTree = "<group>"; };
+		442B170122F12D650087DF3D /* H264HardEncoderImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = H264HardEncoderImpl.h; sourceTree = "<group>"; };
+		442B170222F12D650087DF3D /* H264HardEncoderImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = H264HardEncoderImpl.m; sourceTree = "<group>"; };
 		44E2333122EA981E007E03F8 /* AVTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44E2333422EA981E007E03F8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		44E2333522EA981E007E03F8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -186,6 +189,8 @@
 				44E2337822EAA586007E03F8 /* InfoPlist.strings */,
 				44E233C122EADCFF007E03F8 /* AVFoundationViewController.h */,
 				44E233C222EADCFF007E03F8 /* AVFoundationViewController.m */,
+				442B170122F12D650087DF3D /* H264HardEncoderImpl.h */,
+				442B170222F12D650087DF3D /* H264HardEncoderImpl.m */,
 			);
 			path = AVTest;
 			sourceTree = "<group>";
@@ -341,6 +346,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				44E233C322EADCFF007E03F8 /* AVFoundationViewController.m in Sources */,
+				442B170322F12D650087DF3D /* H264HardEncoderImpl.m in Sources */,
 				442B16A922EEF44D0087DF3D /* GSYUVRenderI420.m in Sources */,
 				442B16A722EEF44D0087DF3D /* GSRGBRender.m in Sources */,
 				442B16A822EEF44D0087DF3D /* GSYUVRenderNV12.m in Sources */,

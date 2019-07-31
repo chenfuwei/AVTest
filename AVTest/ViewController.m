@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "AVFoundationViewController.h"
-
 @interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
