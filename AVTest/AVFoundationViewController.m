@@ -11,9 +11,10 @@
 #import "GSSDLGLView.h"
 #import "GSGLBuffer.h"
 #import "H264HardEncoderImpl.h"
+#import "H264HardDecoderImpl.h"
 
-@interface AVFoundationViewController ()<AVCaptureVideoDataOutputSampleBufferDelegate, H264HardEncoderImplDelegate>
-
+@interface AVFoundationViewController ()<AVCaptureVideoDataOutputSampleBufferDelegate, H264HardEncoderImplDelegate, H264HardDecoderImplDelegate>
+@property(nonatomic, strong)H264HardDecoderImpl* h264Decoder;
 @end
 
 @implementation AVFoundationViewController
@@ -36,6 +37,16 @@
     int fd;
     NSFileHandle* fileHandle;
     BOOL startCalled;
+    
+}
+
+-(void)configH264Decoder
+{
+    if(!self.h264Decoder)
+    {
+        self.h264Decoder = [[H264HardDecoderImpl alloc] init];
+        self.h264Decoder.delegate = self;
+    }
 }
 
 - (void)viewDidLoad {
@@ -94,6 +105,8 @@
     
     h264Encoder = [[H264HardEncoderImpl alloc] init];
     startCalled = true;
+    
+    [self configH264Decoder];
 }
 
 -(void)encodeVideo:(UIButton*)sender
@@ -117,6 +130,8 @@
         [fileHandle closeFile];
         fileHandle = NULL;
         [h264Encoder end];
+        
+        [self.h264Decoder end];
     }
 }
 
@@ -318,9 +333,10 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+        CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     if(_outPutFormateType == kCVPixelFormatType_32BGRA)
     {
-        UIImage* image = [self imageFromSampleBuffer:sampleBuffer];
+        UIImage* image = [self imageFromSampleBuffer:imageBuffer];
         __weak typeof (self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong typeof(self) strongSelf = weakSelf;
@@ -328,10 +344,10 @@
         });
     }else if(_outPutFormateType == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)
     {
-        [self imageFromYUV420VideoRange:sampleBuffer];
+        //[self imageFromYUV420VideoRange:imageBuffer];
     }else if(_outPutFormateType == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)
     {
-        [self imageFromYUV420VideoRange:sampleBuffer];
+       // [self imageFromYUV420VideoRange:imageBuffer];
     }
     
     if(!startCalled && h264Encoder)
@@ -340,13 +356,19 @@
     }
 }
 
--(void)imageFromYUV420VideoRange:(CMSampleBufferRef)sampleBuffer
+-(void)imageFromYUV420VideoRange:(CVImageBufferRef)imageBuffer
 {
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+
     CVPixelBufferLockBaseAddress(imageBuffer, 0);
     size_t width = CVPixelBufferGetWidth(imageBuffer);
     size_t height = CVPixelBufferGetHeight(imageBuffer);
-
+ ReLog(@"decode width:%d height:%d", width, height);
+    if(width <= 0 || height <= 0)
+    {
+        ReLog(@"decode error width:%d height:%d", width, height);
+        CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
+        return;
+    }
     void* imageAddress = CVPixelBufferGetBaseAddressOfPlane(imageBuffer, 0);
     Byte* buffer1 = malloc(width * height * 3 / 2);
     memcpy(buffer1, imageAddress, width* height);
@@ -360,38 +382,41 @@
         memcpy(buffer1 + b, imageAddress + width * height + i, 1);
         b ++;
     }
-    
+
     GSGLBuffer *buffer = [[GSGLBuffer alloc] init];
     buffer->w = width;
     buffer->h = height;
     buffer->format = SDL_FCC_I420;
-    
+
     uint8_t* y = malloc(width * height);
     memcpy(y, buffer1, width * height);
-    
+
     uint8_t* u = malloc(width * height / 4);
     memcpy(u, buffer1 + width * height, width * height / 4);
-    
+
     uint8_t* v = malloc(width * height / 4);
     memcpy(v, buffer1 + width * height * 5 / 4, width * height / 4);
-    
+
     buffer->pixels[0] = y;
     buffer->pitches[0] = buffer->w;
     buffer->pixels[1] = u;
     buffer->pitches[1] = buffer->w/2;
     buffer->pixels[2] = v;
     buffer->pitches[2] = buffer->w/2;
-    
+
     buffer->planes = 3;
-    
+
     CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
-    
-    
+
+    free(buffer1);
     dispatch_async(dispatch_get_main_queue(), ^{
         [_sdlGlView display:buffer];
+        free(y);
+        free(u);
+        free(v);
     });
-//    //下面直接通过imageBuffer渲染
-//    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    //下面直接通过imageBuffer渲染
+   // CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
 //    GSGLBuffer *buffer = [[GSGLBuffer alloc] init];
 //    buffer->w = (int)640;
 //    buffer->h = (int)480;
@@ -412,9 +437,8 @@
 //    CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
 }
 
--(UIImage*)imageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer
+-(UIImage*)imageFromSampleBuffer:(CVImageBufferRef)imageBuffer
 {
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     CVPixelBufferLockBaseAddress(imageBuffer,0);
     void* baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
     size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
@@ -445,9 +469,21 @@
     [fileHandle writeData:sps];
     [fileHandle writeData:byteHeader];
     [fileHandle writeData:pps];
+    
+    uint8_t* spsData = malloc(length + sps.length);
+    memcpy(spsData, bytes, length);
+    memcpy(spsData + length, sps.bytes, sps.length);
+    
+    uint8_t* ppsData = malloc(length + pps.length);
+    memcpy(ppsData, bytes, length);
+    memcpy(ppsData + length, pps.bytes, pps.length);
+    [self.h264Decoder decodeNalu:spsData  size:(uint32_t)(length + sps.length)];
+    [self.h264Decoder decodeNalu:ppsData size:(uint32_t)(length + pps.length)];
+    free(spsData);
+    free(ppsData);
 }
 
-- (void)gotEncodedData:(NSData *)data isKeyFrame:(BOOL)isKeyFrame
+-(void)gotEncodedData:(NSData*)data isKeyFrame:(BOOL)isKeyFrame;
 {
     static int frameCount = 1;
     if(fileHandle != NULL)
@@ -457,6 +493,18 @@
         NSData* byteHeader = [NSData dataWithBytes:bytes length:length];
         [fileHandle writeData:byteHeader];
         [fileHandle writeData:data];
+        
+        uint8_t* h264data = malloc(length + data.length);
+        memcpy(h264data, bytes, length);
+        memcpy(h264data + length, data.bytes, data.length);
+        [self.h264Decoder decodeNalu:h264data size:(uint32_t)(length + data.length)];
+        free(h264data);
     }
+}
+
+- (void)gotDecoderFrame:(CVImageBufferRef)imageBuffer
+{
+    [self imageFromYUV420VideoRange:imageBuffer];
+    //CFRelease(imageBuffer);
 }
 @end

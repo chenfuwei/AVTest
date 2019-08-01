@@ -303,7 +303,6 @@ typedef NS_ENUM(NSInteger, GSSDLGLViewApplicationState) {
     if (overlay == nil)
         return _renderer != nil;
     
-  
     if (![_renderer isvalidate] ||
         ![_renderer isFormat:overlay->format]) {
         if (_renderer) [_renderer reset];

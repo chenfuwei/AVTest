@@ -53,7 +53,7 @@
 void didCompressH264(void* outputCallbackRefCon, void* sourceFrameRefCon, OSStatus status, VTEncodeInfoFlags infoFlags,
                      CMSampleBufferRef sampleBuffer)
 {
-    ReLog("status:%d infoFlags:%d", (int)status, (int)infoFlags);
+   // ReLog("status:%d infoFlags:%d", (int)status, (int)infoFlags);
     if(status != 0)
     {
         return;
@@ -92,7 +92,7 @@ void didCompressH264(void* outputCallbackRefCon, void* sourceFrameRefCon, OSStat
         }
     }
     
-    //CMBlockBuffer存储编码后的数据  
+    //CMBlockBuffer存储编码后的数据
     CMBlockBufferRef dataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
     size_t length, totalLength;
     char* dataPointer;
@@ -205,7 +205,7 @@ void didCompressH264(void* outputCallbackRefCon, void* sourceFrameRefCon, OSStat
                 self->error = NULL;
                 return;
             }
-            NSLog(@"H264: VTCompressionSessionEncodeFrame Success");
+            //NSLog(@"H264: VTCompressionSessionEncodeFrame Success");
         }
         VTCompressionSessionCompleteFrames(self->encodingSession, kCMTimeInvalid);
         VTCompressionSessionInvalidate(self->encodingSession);
@@ -260,7 +260,7 @@ void didCompressH264(void* outputCallbackRefCon, void* sourceFrameRefCon, OSStat
             self->error = NULL;
             return;
         }
-        ReLog(@"H264: VTCompressionSessionEncodeFrame Success");
+       // ReLog(@"H264: VTCompressionSessionEncodeFrame Success");
     });
 }
 
