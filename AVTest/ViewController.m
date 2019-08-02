@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "AVFoundationViewController.h"
+#import "AudioCaptureViewController.h"
 @interface ViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
@@ -71,7 +72,8 @@
 
 -(void)audioTest:(UIButton*)sender
 {
-    
+    AudioCaptureViewController* audioCaptureViewController = [[AudioCaptureViewController alloc] init];
+    [self.navigationController pushViewController:audioCaptureViewController animated:YES];
 }
 
 -(void)takePhoto:(UIButton*)sender

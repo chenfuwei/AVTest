@@ -18,6 +18,8 @@
 		442B16AE22EEF44D0087DF3D /* GSGLBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B16A522EEF44D0087DF3D /* GSGLBuffer.m */; };
 		442B170322F12D650087DF3D /* H264HardEncoderImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B170222F12D650087DF3D /* H264HardEncoderImpl.m */; };
 		442B171A22F285C10087DF3D /* H264HardDecoderImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B171922F285C10087DF3D /* H264HardDecoderImpl.m */; };
+		442B172722F4149B0087DF3D /* AudioCaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B172622F4149B0087DF3D /* AudioCaptureViewController.m */; };
+		442B172A22F4167C0087DF3D /* VTAudioCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 442B172922F4167C0087DF3D /* VTAudioCapture.m */; };
 		44E2333622EA981E007E03F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2333522EA981E007E03F8 /* AppDelegate.m */; };
 		44E2333922EA981E007E03F8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E2333822EA981E007E03F8 /* ViewController.m */; };
 		44E2333C22EA981E007E03F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44E2333A22EA981E007E03F8 /* Main.storyboard */; };
@@ -72,6 +74,10 @@
 		442B170222F12D650087DF3D /* H264HardEncoderImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = H264HardEncoderImpl.m; sourceTree = "<group>"; };
 		442B171822F285C10087DF3D /* H264HardDecoderImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = H264HardDecoderImpl.h; sourceTree = "<group>"; };
 		442B171922F285C10087DF3D /* H264HardDecoderImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = H264HardDecoderImpl.m; sourceTree = "<group>"; };
+		442B172522F4149B0087DF3D /* AudioCaptureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioCaptureViewController.h; sourceTree = "<group>"; };
+		442B172622F4149B0087DF3D /* AudioCaptureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioCaptureViewController.m; sourceTree = "<group>"; };
+		442B172822F4167C0087DF3D /* VTAudioCapture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTAudioCapture.h; sourceTree = "<group>"; };
+		442B172922F4167C0087DF3D /* VTAudioCapture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VTAudioCapture.m; sourceTree = "<group>"; };
 		44E2333122EA981E007E03F8 /* AVTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44E2333422EA981E007E03F8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		44E2333522EA981E007E03F8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -196,6 +202,10 @@
 				442B170222F12D650087DF3D /* H264HardEncoderImpl.m */,
 				442B171822F285C10087DF3D /* H264HardDecoderImpl.h */,
 				442B171922F285C10087DF3D /* H264HardDecoderImpl.m */,
+				442B172522F4149B0087DF3D /* AudioCaptureViewController.h */,
+				442B172622F4149B0087DF3D /* AudioCaptureViewController.m */,
+				442B172822F4167C0087DF3D /* VTAudioCapture.h */,
+				442B172922F4167C0087DF3D /* VTAudioCapture.m */,
 			);
 			path = AVTest;
 			sourceTree = "<group>";
@@ -353,6 +363,7 @@
 				44E233C322EADCFF007E03F8 /* AVFoundationViewController.m in Sources */,
 				442B170322F12D650087DF3D /* H264HardEncoderImpl.m in Sources */,
 				442B16A922EEF44D0087DF3D /* GSYUVRenderI420.m in Sources */,
+				442B172A22F4167C0087DF3D /* VTAudioCapture.m in Sources */,
 				442B16A722EEF44D0087DF3D /* GSRGBRender.m in Sources */,
 				442B16A822EEF44D0087DF3D /* GSYUVRenderNV12.m in Sources */,
 				442B16AD22EEF44D0087DF3D /* GSGLRenderColors.m in Sources */,
@@ -362,6 +373,7 @@
 				44E2333922EA981E007E03F8 /* ViewController.m in Sources */,
 				44E2334422EA9820007E03F8 /* main.m in Sources */,
 				442B16AC22EEF44D0087DF3D /* glcommon.c in Sources */,
+				442B172722F4149B0087DF3D /* AudioCaptureViewController.m in Sources */,
 				442B16AA22EEF44D0087DF3D /* GSGLRender.m in Sources */,
 				44E2333622EA981E007E03F8 /* AppDelegate.m in Sources */,
 				442B16AE22EEF44D0087DF3D /* GSGLBuffer.m in Sources */,
