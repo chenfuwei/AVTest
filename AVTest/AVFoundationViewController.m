@@ -13,7 +13,7 @@
 #import "H264HardEncoderImpl.h"
 #import "H264HardDecoderImpl.h"
 
-@interface AVFoundationViewController ()<AVCaptureVideoDataOutputSampleBufferDelegate, H264HardEncoderImplDelegate, H264HardDecoderImplDelegate>
+@interface AVFoundationViewController ()<AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate, H264HardEncoderImplDelegate, H264HardDecoderImplDelegate>
 @property(nonatomic, strong)H264HardDecoderImpl* h264Decoder;
 @end
 
@@ -21,8 +21,11 @@
 {
     AVCaptureSession* _session;
     AVCaptureDevice* _videoDevice;
+    AVCaptureDevice* _audioDevice;
     AVCaptureDeviceInput* _videoInput;
+    AVCaptureDeviceInput* _audioInput;
     AVCaptureVideoDataOutput* _videoDataOutput;
+    AVCaptureAudioDataOutput* _audioDataOutput;
     
     UIImageView* _imageView;
     UIView* _previewView;
@@ -37,6 +40,9 @@
     int fd;
     NSFileHandle* fileHandle;
     BOOL startCalled;
+    
+    NSString* pcmFile;
+    NSFileHandle* pcmFileHandle;
     
 }
 
@@ -137,6 +143,11 @@
 
 -(void)stopCapture:(UIButton*)sender
 {
+    if(pcmFileHandle)
+    {
+        [pcmFileHandle closeFile];
+        pcmFileHandle = nil;
+    }
     if(_session.isRunning)
     {
         [_session stopRunning];
@@ -147,6 +158,14 @@
 {
     [self initAVCaptureSession];
     [_session startRunning];
+    
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentDirectory = [paths objectAtIndex:0];
+    pcmFile = [documentDirectory stringByAppendingPathComponent:@"audio.pcm"];
+    [fileManager removeItemAtPath:pcmFile error:nil];
+    [fileManager createFileAtPath:pcmFile contents:nil attributes:nil];
+    pcmFileHandle = [NSFileHandle fileHandleForWritingAtPath:pcmFile];
 }
 
 -(void)switchFocus:(UIButton*)sender
@@ -203,6 +222,7 @@
 
 -(void)initAVCaptureSession
 {
+    //无法设置音频采集的参数
     _session = [[AVCaptureSession alloc] init];
     BOOL bSupport = [_session canSetSessionPreset:AVCaptureSessionPreset640x480];
     if(bSupport)
@@ -214,6 +234,8 @@
     [_session beginConfiguration];
     [self videoInput];
     [self videoOutput];
+    [self audioInput];
+    [self audioOutput];
     [_session commitConfiguration];
     
     [self addAVCaptureVideoPreviewLayer];
@@ -234,13 +256,29 @@
     _videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:_videoDevice error:&error];
     if(error)
     {
-        ReLog(@"avcapturedeviceinput alloc error");
+        ReLog(@"avcapturedeviceinput video alloc error");
         return;
     }
     
     if([_session canAddInput:_videoInput])
     {
         [_session addInput:_videoInput];
+    }
+}
+
+-(void)audioInput
+{
+    _audioDevice = [self audioDeviceAfter10];
+    NSError* error;
+    _audioInput = [[AVCaptureDeviceInput alloc] initWithDevice:_audioDevice error:&error];
+    if(error)
+    {
+        ReLog(@"avcapturedeviceinput audio error");
+        return;
+    }
+    if([_session canAddInput:_audioInput])
+    {
+        [_session addInput:_audioInput];
     }
 }
 
@@ -266,6 +304,17 @@
     if([_session canAddOutput:_videoDataOutput])
     {
         [_session addOutput:_videoDataOutput];
+    }
+}
+
+-(void)audioOutput
+{
+    _audioDataOutput = [[AVCaptureAudioDataOutput alloc] init];
+    dispatch_queue_t audioQueur = dispatch_get_global_queue(0, 0);
+    [_audioDataOutput setSampleBufferDelegate:self queue:audioQueur];
+    if([_session canAddOutput:_audioDataOutput])
+    {
+        [_session addOutput:_audioDataOutput];
     }
 }
 
@@ -304,6 +353,18 @@
     }
 }
 
+-(AVCaptureDevice*)audioDeviceAfter10
+{
+    AVCaptureDeviceDiscoverySession* discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInMicrophone] mediaType:AVMediaTypeAudio position:AVCaptureDevicePositionUnspecified];
+    NSArray* audioDeviceIOs = discoverySession.devices;
+    ReLog(" audioDevices count:%zd", audioDeviceIOs.count);
+    if(audioDeviceIOs.count > 0)
+    {
+        return audioDeviceIOs[0];
+    }
+    return nil;
+}
+
 -(AVCaptureDevice*)cameraWithPositionBefore10:(AVCaptureDevicePosition)position
 {
     NSArray* devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
@@ -333,26 +394,43 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+    if(output == _videoDataOutput)
+    {
         CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    if(_outPutFormateType == kCVPixelFormatType_32BGRA)
+        if(_outPutFormateType == kCVPixelFormatType_32BGRA)
+        {
+            UIImage* image = [self imageFromSampleBuffer:imageBuffer];
+            __weak typeof (self) weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                __strong typeof(self) strongSelf = weakSelf;
+                strongSelf->_imageView.image = image;
+            });
+        }else if(_outPutFormateType == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)
+        {
+            //[self imageFromYUV420VideoRange:imageBuffer];
+        }else if(_outPutFormateType == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)
+        {
+           // [self imageFromYUV420VideoRange:imageBuffer];
+        }
+        
+        if(!startCalled && h264Encoder)
+        {
+            [h264Encoder encode:sampleBuffer];
+        }
+    }else if(output == _audioDataOutput)
     {
-        UIImage* image = [self imageFromSampleBuffer:imageBuffer];
-        __weak typeof (self) weakSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            __strong typeof(self) strongSelf = weakSelf;
-            strongSelf->_imageView.image = image;
-        });
-    }else if(_outPutFormateType == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)
-    {
-        //[self imageFromYUV420VideoRange:imageBuffer];
-    }else if(_outPutFormateType == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)
-    {
-       // [self imageFromYUV420VideoRange:imageBuffer];
-    }
-    
-    if(!startCalled && h264Encoder)
-    {
-        [h264Encoder encode:sampleBuffer];
+        size_t size = CMSampleBufferGetTotalSampleSize(sampleBuffer);
+        int8_t* audio_data = (int8_t*)malloc(size);
+        memset(audio_data, 0, size);
+        CMBlockBufferRef blockBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
+        CMBlockBufferCopyDataBytes(blockBuffer, 0, size, audio_data);
+        
+        if(nil != pcmFileHandle)
+        {
+            NSData* data = [NSData dataWithBytes:audio_data length:size];
+            [pcmFileHandle writeData:data];
+        }
+        free(audio_data);
     }
 }
 
@@ -507,4 +585,5 @@
     [self imageFromYUV420VideoRange:imageBuffer];
     //CFRelease(imageBuffer);
 }
+
 @end
